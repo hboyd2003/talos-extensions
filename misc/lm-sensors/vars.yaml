@@ -1,0 +1,1 @@
+VERSION: "{{ .LM_SENSORS_VERSION }}"

@@ -1,0 +1,60 @@
+name: lm-sensors
+variant: scratch
+shell: /bin/bash
+dependencies:
+  - stage: base
+steps:
+  - sources:
+      - url: https://github.com/hramrach/lm-sensors/archive/refs/tags/{{ .LM_SENSORS_VERSION }}.tar.gz
+        destination: lm-sensors.tar.gz
+        sha256: {{ .LM_SENSORS_SHA256 }}
+        sha512: {{ .LM_SENSORS_SHA512 }}
+    prepare:
+      - |
+        LM_SENSORS_PROPER_VERSION=$(echo {{ .LM_SENSORS_VERSION }} | tr '-' '.' | tr 'V' 'v')
+
+        sed -i "s#\$VERSION#$LM_SENSORS_PROPER_VERSION#" /pkg/manifest.yaml
+      - |
+        tar -xf lm-sensors.tar.gz --strip-components=1
+      - |
+        mkdir -p /usr/bin # TODO: Needed?
+    build:
+      - |
+        make -j $(nproc) all
+    install:
+      - |
+        make DESTDIR=/rootfs install
+
+        containerRoot=/rootfs/usr/local/lib/containers/lm-sensors
+        # TODO: Do we need include and site-functions?
+        # TODO: Why do we create bin if we don't use it?
+        mkdir -p "$containerRoot"/{etc,bin,usr/local/lib,include/sensors,share/zsh/site-functions}
+        cp /rootfs/usr/local/bin/sensors "$containerRoot/sensors"
+        mv /rootfs/usr/local/lib/lib* "$containerRoot/usr/local/lib/"
+        mv /rootfs/etc/* "$containerRoot/etc/"
+        mv /rootfs/usr/local/include/sensors/* "$containerRoot/include/sensors/"
+        mv /rootfs/usr/local/share/zsh/site-functions/* "$containerRoot/share/zsh/site-functions/"
+
+        # cleanup
+        
+        rm -rf /rootfs/usr/local/bin
+        rm -rf /rootfs/usr/local/man
+        rm -rf /rootfs/usr/local/sbin
+        rm -rf /rootfs/etc
+        rm -rf /rootfs/usr/local/share
+        rm -rf /rootfs/usr/local/include
+      - |
+        mkdir -p /rootfs/usr/local/etc/containers
+        cp /pkg/lm-sensors.yaml /rootfs/usr/local/etc/containers/
+    test:
+      - |
+        mkdir -p /extensions-validator-rootfs
+        cp -r /rootfs/ /extensions-validator-rootfs/rootfs
+        cp /pkg/manifest.yaml /extensions-validator-rootfs/manifest.yaml
+        /extensions-validator validate --rootfs=/extensions-validator-rootfs --pkg-name="${PKG_NAME}"
+finalize:
+  - from: /rootfs
+    to: /rootfs
+  - from: /pkg/manifest.yaml
+    to: /
+

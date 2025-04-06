@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2025-04-02T15:35:29Z by kres d903dae.
+# Generated on 2025-04-06T22:11:38Z by kres d903dae.
 
 # common variables
 
@@ -13,7 +13,7 @@ IMAGE_TAG ?= $(TAG)
 OPERATING_SYSTEM := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 GOARCH := $(shell uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
 REGISTRY ?= ghcr.io
-USERNAME ?= siderolabs
+USERNAME ?= hboyd2003
 REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
 KRES_IMAGE ?= ghcr.io/siderolabs/kres:latest
 CONFORMANCE_IMAGE ?= ghcr.io/siderolabs/conform:latest
@@ -83,6 +83,7 @@ TARGETS += intel-ucode
 TARGETS += iscsi-tools
 TARGETS += kata-containers
 TARGETS += lldpd
+TARGETS += lm-sensors
 TARGETS += mdadm
 TARGETS += mei
 TARGETS += metal-agent

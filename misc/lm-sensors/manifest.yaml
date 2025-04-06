@@ -1,0 +1,11 @@
+version: v1alpha1
+metadata:
+  name: lm-sensors
+  version: "$VERSION"
+  author: Harrison Boyd
+  description: |
+    This system extension provides the lm_sensors service.
+  compatibility:
+    talos:
+      version: ">= v1.0.0"
+

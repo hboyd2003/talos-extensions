@@ -28,6 +28,7 @@ spec:
     - iscsi-tools
     - kata-containers
     - lldpd
+    - lm-sensors
     - mdadm
     - mei
     - metal-agent

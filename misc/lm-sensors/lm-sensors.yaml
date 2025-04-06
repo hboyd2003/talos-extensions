@@ -1,0 +1,32 @@
+name: lm-sensors
+depends:
+  - configuration: true
+container:
+  entrypoint: ./sensors
+  mounts:
+    # Shared libraries.
+    - source: /lib
+      destination: /lib
+      type: bind
+      options:
+        - bind
+        - ro
+    - source: /usr/lib
+      destination: /usr/lib
+      type: bind
+      options:
+        - bind
+        - ro
+    - source: /dev
+      destination: /dev
+      type: bind
+      options:
+        - bind
+        - rw
+    - source: /sys
+      destination: /sys
+      type: bind
+      options:
+        - bind
+        - rw
+restart: always

@@ -1,3 +1,6 @@
+kind: auto.CI
+spec:
+  disableSlackWorkflow: true
 ---
 kind: pkgfile.Build
 spec:
@@ -88,6 +91,7 @@ spec:
       - name: TOOLS_PREFIX
         defaultValue: ghcr.io/siderolabs
   useBldrPkgTagResolver: true
+  disableSlackNotification: false
 ---
 kind: common.Build
 spec:
@@ -127,6 +131,7 @@ spec:
   ghaction:
     enabled: true
     condition: except-pull-request
+    disableSlackNotification: false
     environment:
       PUSH: true
 ---

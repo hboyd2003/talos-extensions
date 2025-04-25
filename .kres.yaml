@@ -62,6 +62,8 @@ spec:
     - xen-guest-agent
     - zerotier
     - zfs
+  imageNamePrefix: talos-
+  imageNameSuffix: -extension
   additionalTargets:
     nonfree:
       - nonfree-kmod-nvidia-lts
@@ -139,8 +141,8 @@ spec:
     script:
       - |
         @rm -f _out/extensions-metadata
-        @$(foreach target,$(TARGETS),echo $(REGISTRY)/$(USERNAME)/$(target):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
-        @$(foreach target,$(NONFREE_TARGETS),echo $(REGISTRY)/$(USERNAME)/$(target):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
+        @$(foreach target,$(TARGETS),echo $(REGISTRY)/$(USERNAME)/$(IMAGE_NAME_PREFIX)$(target)$(IMAGE_NAME_SUFFIX):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
+        @$(foreach target,$(NONFREE_TARGETS),echo $(REGISTRY)/$(USERNAME)/$(IMAGE_NAME_PREFIX)$(target)$(IMAGE_NAME_SUFFIX):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
 ---
 kind: custom.Step
 name: internal/extensions/image-digests

@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2025-04-06T22:11:38Z by kres d903dae.
+# Generated on 2025-04-25T19:36:14Z by kres 2da477c.
 
 # common variables
 
@@ -15,6 +15,8 @@ GOARCH := $(shell uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
 REGISTRY ?= ghcr.io
 USERNAME ?= hboyd2003
 REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
+IMAGE_NAME_PREFIX ?= talos-
+IMAGE_NAME_SUFFIX ?= -extension
 KRES_IMAGE ?= ghcr.io/siderolabs/kres:latest
 CONFORMANCE_IMAGE ?= ghcr.io/siderolabs/conform:latest
 
@@ -203,7 +205,7 @@ nonfree: $(NONFREE_TARGETS)  ## Builds all nonfree targets defined.
 
 .PHONY: $(TARGETS) $(NONFREE_TARGETS)
 $(TARGETS) $(NONFREE_TARGETS): $(ARTIFACTS)/bldr
-	@$(MAKE) docker-$@ TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/$@:$(shell $(ARTIFACTS)/bldr eval --target $@ --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) --push=$(PUSH)"
+	@$(MAKE) docker-$@ TARGET_ARGS="--tag=$(REGISTRY_AND_USERNAME)/$(IMAGE_NAME_PREFIX)$@$(IMAGE_NAME_SUFFIX):$(shell $(ARTIFACTS)/bldr eval --target $@ --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) --push=$(PUSH)"
 
 $(ARTIFACTS)/bldr: $(ARTIFACTS)  ## Downloads bldr binary.
 	@curl -sSL https://github.com/siderolabs/bldr/releases/download/$(BLDR_RELEASE)/bldr-$(OPERATING_SYSTEM)-$(GOARCH) -o $(ARTIFACTS)/bldr
@@ -220,8 +222,8 @@ extensions: internal/extensions/descriptions.yaml
 .PHONY: extensions-metadata
 extensions-metadata: $(ARTIFACTS)/bldr
 	@rm -f _out/extensions-metadata
-	@$(foreach target,$(TARGETS),echo $(REGISTRY)/$(USERNAME)/$(target):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
-	@$(foreach target,$(NONFREE_TARGETS),echo $(REGISTRY)/$(USERNAME)/$(target):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
+	@$(foreach target,$(TARGETS),echo $(REGISTRY)/$(USERNAME)/$(IMAGE_NAME_PREFIX)$(target)$(IMAGE_NAME_SUFFIX):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
+	@$(foreach target,$(NONFREE_TARGETS),echo $(REGISTRY)/$(USERNAME)/$(IMAGE_NAME_PREFIX)$(target)$(IMAGE_NAME_SUFFIX):$(shell $(ARTIFACTS)/bldr eval --target $(target) --build-arg TAG=$(TAG) '{{.VERSION}}' 2>/dev/null) >> _out/extensions-metadata;)
 
 .PHONY: internal/extensions/image-digests
 internal/extensions/image-digests: extensions-metadata

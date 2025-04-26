@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2025-04-26T08:26:44Z by kres 3250612.
+# Generated on 2025-04-26T23:29:09Z by kres 107ecdc.
 
 name: weekly
 concurrency:
@@ -47,12 +47,6 @@ jobs:
       - name: Set up Docker Buildx
         id: setup-buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          append: |
-            - endpoint: tcp://buildkit-arm64.ci.svc.cluster.local:1234
-              platforms: linux/arm64
-          driver: remote
-          endpoint: tcp://buildkit-amd64.ci.svc.cluster.local:1234
       - name: reproducibility-test
         run: |
           make reproducibility-test

@@ -2,6 +2,11 @@ kind: auto.CI
 spec:
   disableSlackWorkflow: true
 ---
+king: common.GHWorkflow
+spec:
+  customRunners:
+    - ubuntu-latest
+---
 kind: pkgfile.Build
 spec:
   targets:
@@ -91,7 +96,8 @@ spec:
       - name: TOOLS_PREFIX
         defaultValue: ghcr.io/siderolabs
   useBldrPkgTagResolver: true
-  disableSlackNotification: false
+  customRunners:
+    - ubuntu-latest
 ---
 kind: common.Build
 spec:
@@ -131,7 +137,6 @@ spec:
   ghaction:
     enabled: true
     condition: except-pull-request
-    disableSlackNotification: false
     environment:
       PUSH: true
 ---

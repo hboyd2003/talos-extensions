@@ -68,6 +68,7 @@ spec:
     - wasmedge
     - xdma-driver
     - xen-guest-agent
+    - youki
     - zerotier
     - zfs
   imageNamePrefix: talos-

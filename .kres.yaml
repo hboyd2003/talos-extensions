@@ -5,6 +5,7 @@ spec:
 king: common.GHWorkflow
 spec:
   customRunners:
+    - self-hosted
     - ubuntu-latest
 ---
 kind: pkgfile.Build
@@ -99,6 +100,7 @@ spec:
   useBldrPkgTagResolver: true
   customRunners:
     - ubuntu-latest
+    - self-hosted
 ---
 kind: common.Build
 spec:

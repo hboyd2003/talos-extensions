@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2025-05-01T09:20:03Z by kres 107ecdc.
+# Generated on 2025-05-01T09:30:19Z by kres 107ecdc.
 
 name: default
 concurrency:
@@ -26,7 +26,6 @@ jobs:
       packages: write
       pull-requests: read
     runs-on:
-      - ubuntu-latest
       - self-hosted
     if: (!startsWith(github.head_ref, 'renovate/') && !startsWith(github.head_ref, 'dependabot/'))
     outputs:
@@ -121,7 +120,6 @@ jobs:
           draft: "true"
   reproducibility:
     runs-on:
-      - ubuntu-latest
       - self-hosted
     if: contains(fromJSON(needs.default.outputs.labels), 'integration/reproducibility')
     needs:
